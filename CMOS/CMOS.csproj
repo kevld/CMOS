@@ -29,6 +29,17 @@
         <PackageReference Include="Cosmos.Debug.Kernel" Version="0-*" NoWarn="NU1604" />
         <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604" />
     </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\CMOS.Apps\CMOS.Apps.csproj" />
+      <ProjectReference Include="..\CMOS.Framework\CMOS.Framework.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Ressources\splash.jpg">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
 	
 
 </Project>

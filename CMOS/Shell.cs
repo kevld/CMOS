@@ -1,15 +1,26 @@
-﻿using Cosmos.HAL;
+﻿using CMOS.Apps;
+using CMOS.Framework.Interface;
+using Cosmos.HAL;
 using System;
+using System.ComponentModel;
+using Sys = Cosmos.System;
 
 namespace CMOS
 {
     public class Shell : IApp
     {
+        private IDiskProperties _diskProperties;
+
         private bool _initialized = false;
+
+        public Shell(IDiskProperties diskProperties)
+        {
+            _diskProperties = diskProperties;
+        }
 
         public void About()
         {
-            Console.WriteLine("Shell v0.0.1");
+            Console.WriteLine("Shell v0.0.2");
             Console.WriteLine();
         }
 
@@ -90,12 +101,12 @@ namespace CMOS
                     break;
                 case "disk":
                 case "d":
-                    Disk disk = new();
+                    Disk disk = new(_diskProperties);
                     disk.Run();
                     break;
                 case "text":
                 case "t":
-                    Text text = new();
+                    Text text = new(_diskProperties);
                     text.Run();
                     break;
                 default:
