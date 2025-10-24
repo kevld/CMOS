@@ -1,7 +1,7 @@
 ﻿
-using System;
+using CMOS.Framework.Interface;
 
-namespace CMOS
+namespace CMOS.Apps
 {
     public class Clock : IApp
     {
@@ -9,7 +9,7 @@ namespace CMOS
 
         public void About()
         {
-            Console.WriteLine("Clock v0.0.1");
+            Console.WriteLine("Clock v0.0.2");
         }
 
         public void Exit()

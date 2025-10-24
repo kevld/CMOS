@@ -1,4 +1,29 @@
-﻿=== v.0.0.1 ===
+﻿=== v1.0.0 ===
+- Installer
+=== v0.3.0 ===
+- All softwares in GUI
+=== v0.2.1 ===
+- Musical player
+=== v0.2.0 ===
+- GUI
+=== v0.1.1 ===
+- Bug fixing if needed
+=== v0.1.0 ===
+- Multitasking
+- New interface (top ribbon)
+=== v0.0.4 ===
+- Translation
+- Control panel (user settings)
+- Universal shortcuts
+=== v0.0.3 ===
+- Todo
+- Update Text (open by arrows)
+- Calendar
+- file explorer (cd, md, del, ls)
+=== v0.0.2 ===
+- Debug environment
+- Splashscreen
+=== v0.0.1 ===
 - kernel	0.0.1
 - Shell		0.0.1
 - Text		0.0.1	

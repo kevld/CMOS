@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CMOS.Framework.Implementation;
+using CMOS.Framework.Interface;
+using System;
 using Sys = Cosmos.System;
 
 namespace CMOS
@@ -11,18 +11,16 @@ namespace CMOS
 
         protected override void BeforeRun()
         {
-            Sys.FileSystem.CosmosVFS fs = new Cosmos.System.FileSystem.CosmosVFS();
+
+            Sys.FileSystem.CosmosVFS fs = new();
             Sys.FileSystem.VFS.VFSManager.RegisterVFS(fs);
+            fs.Initialize(true);
 
-            _shell = new();
+            IDiskProperties _diskProperties = new CmosDiskProperties(fs);
 
-            Console.Clear();
-            Console.WriteLine("=== CMOS 0.0.1 ===");
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
-            Console.Clear();
+            _shell = new(_diskProperties);
 
-            
+            SplashScreen.Show();
         }
 
         protected override void Run()

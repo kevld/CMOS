@@ -1,13 +1,20 @@
-﻿using System;
-using Sys = Cosmos.System;
+﻿using CMOS.Framework.Interface;
 
-namespace CMOS
+namespace CMOS.Apps
 {
     public class Disk : IApp
     {
+        private readonly IDiskProperties _diskProperties;
+
+        public Disk(IDiskProperties diskProperties)
+        {
+            if(diskProperties == null) throw new ArgumentNullException(nameof(diskProperties));
+            _diskProperties = diskProperties;
+        }
+
         public void About()
         {
-            Console.WriteLine("Disk v0.0.1");
+            Console.WriteLine("Disk v0.0.2");
         }
 
         public void Exit()
@@ -25,11 +32,7 @@ namespace CMOS
 
         public void Run()
         {
-            Sys.FileSystem.CosmosVFS fs = new();
-            Sys.FileSystem.VFS.VFSManager.RegisterVFS(fs);
-            string label = fs.GetFileSystemLabel(@"0:\");
-            string partitionType = fs.GetFileSystemType(@"0:\");
-            var freeSpace = fs.GetAvailableFreeSpace(@"0:\") / 1024 / 1024;
+            long freeSpace = _diskProperties.FreeSpace / 1024 / 1024;
 
             string formattedSpace;
 
@@ -43,8 +46,7 @@ namespace CMOS
                 formattedSpace = $"{freeSpace:F0} Mb";
             }
 
-
-            Console.WriteLine($"{label} | {partitionType} | Free Space: {formattedSpace}");
+            Console.WriteLine($"{_diskProperties.Label} | {_diskProperties.PartitionType} | Free Space: {formattedSpace}");
         }
     }
 }

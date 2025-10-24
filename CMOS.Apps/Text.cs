@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using CMOS.Framework.Interface;
 
-namespace CMOS
+namespace CMOS.Apps
 {
     public class Text : IApp
     {
+        private readonly IDiskProperties _diskProperties;
+
         private bool editing = true;
         private bool forceRefresh = false;
         private bool isSaved = true;
 
-        private string fileName = string.Empty;
+        private string? fileName = string.Empty;
 
         private List<string> lines = new List<string>();
         private int cursorX = 0;
@@ -19,9 +18,12 @@ namespace CMOS
 
         private ConsoleKeyInfo keyInfo;
 
-        public Text()
+        public Text(IDiskProperties diskProperties)
         {
+            if(diskProperties == null) throw new ArgumentNullException(nameof(diskProperties));
+
             lines = new List<string> { "" };
+            _diskProperties = diskProperties;
         }
 
         public void About()
@@ -160,7 +162,7 @@ namespace CMOS
         private void Open()
         {
             Console.Clear();
-            List<string> files = Directory.GetFiles(@"0:\")
+            List<string> files = Directory.GetFiles(_diskProperties.RootPath)
                 .Where(x => x.EndsWith(".txt"))
                 .ToList();
 
@@ -183,12 +185,12 @@ namespace CMOS
 
             Console.WriteLine();
             Console.Write("Select file number to open : ");
-            string choice = Console.ReadLine();
+            string? choice = Console.ReadLine();
 
             if (int.TryParse(choice, out int sel) && sel >= 0 && sel < files.Count)
             {
                 fileName = files[sel];
-                if (!fileName.StartsWith(@"0:\")) { fileName = @"0:\" + fileName; }
+                if (!fileName.StartsWith(_diskProperties.RootPath)) { fileName = _diskProperties.RootPath + fileName; }
 
                 try
                 {
@@ -228,8 +230,8 @@ namespace CMOS
 
             if (!fileName.EndsWith(".txt"))
                 fileName += ".txt";
-            if (!fileName.StartsWith(@"0:\"))
-                fileName = $@"0:\{fileName}";
+            if (!fileName.StartsWith(_diskProperties.RootPath))
+                fileName = $"{_diskProperties.RootPath}{fileName}";
 
             try
             {
