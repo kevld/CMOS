@@ -11,13 +11,13 @@ namespace CMOS
             Console.WriteLine();
             Console.WriteLine();
 
-            // Cadre du haut
+            // Upper line
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("+------------------------------------+");
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("|                                    |");
 
-            // Ligne 1
+            // Line 1
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.Write("|  ");
             Console.ForegroundColor = ConsoleColor.Red;
@@ -31,7 +31,7 @@ namespace CMOS
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("    |");
 
-            // Ligne 2
+            // Line 2
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.Write("|  ");
             Console.ForegroundColor = ConsoleColor.Red;
@@ -45,7 +45,7 @@ namespace CMOS
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("    |");
 
-            // Ligne 3
+            // Line 3
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.Write("|  ");
             Console.ForegroundColor = ConsoleColor.Red;
@@ -59,7 +59,7 @@ namespace CMOS
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("   |");
 
-            // Ligne 4
+            // Line 4
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.Write("|  ");
             Console.ForegroundColor = ConsoleColor.Red;
@@ -73,7 +73,7 @@ namespace CMOS
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("   |");
 
-            // Ligne 5
+            // Line 5
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.Write("|  ");
             Console.ForegroundColor = ConsoleColor.Red;
@@ -87,7 +87,7 @@ namespace CMOS
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("   |");
 
-            // Ligne 6
+            // Line 6
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.Write("|  ");
             Console.ForegroundColor = ConsoleColor.Red;
@@ -104,7 +104,7 @@ namespace CMOS
             Console.Write("|                             ");
             WriteVersion();
 
-            // Cadre du bas
+            // bottom line
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine(" |");
             Console.ForegroundColor = ConsoleColor.Magenta;

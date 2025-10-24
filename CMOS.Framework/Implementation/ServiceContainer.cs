@@ -2,7 +2,7 @@
 
 namespace CMOS.Framework.Implementation
 {
-    // Classe interne pour stocker les descripteurs de services
+    // DI container
     internal class ServiceDescriptor
     {
         public string TypeName { get; set; }
@@ -20,13 +20,11 @@ namespace CMOS.Framework.Implementation
             _services = new List<ServiceDescriptor>();
         }
 
-        // Enregistrer un service transient (nouvelle instance à chaque fois)
         public void AddTransient<TInterface, TImplementation>()
             where TImplementation : TInterface, new()
         {
             var typeName = typeof(TInterface).Name;
 
-            // Retirer l'existant si présent
             RemoveService(typeName);
 
             _services.Add(new ServiceDescriptor
@@ -37,7 +35,6 @@ namespace CMOS.Framework.Implementation
             });
         }
 
-        // Enregistrer un transient sans interface (classe concrète)
         public void AddTransient<TService>() where TService : new()
         {
             var typeName = typeof(TService).Name;
@@ -52,7 +49,6 @@ namespace CMOS.Framework.Implementation
             });
         }
 
-        // Enregistrer un singleton (instance unique)
         public void AddSingleton<TInterface, TImplementation>()
             where TImplementation : TInterface, new()
         {
@@ -69,7 +65,6 @@ namespace CMOS.Framework.Implementation
             });
         }
 
-        // Enregistrer un singleton sans interface (classe concrète)
         public void AddSingleton<TService>() where TService : new()
         {
             var typeName = typeof(TService).Name;
@@ -85,7 +80,6 @@ namespace CMOS.Framework.Implementation
             });
         }
 
-        // Enregistrer une instance existante
         public void AddSingleton<TInterface>(TInterface instance)
         {
             if (instance == null)
@@ -103,7 +97,6 @@ namespace CMOS.Framework.Implementation
             });
         }
 
-        // Enregistrer un singleton avec factory
         public void AddSingleton<TInterface>(Func<TInterface> factory)
         {
             if (factory == null)
@@ -122,7 +115,6 @@ namespace CMOS.Framework.Implementation
             });
         }
 
-        // Enregistrer un transient avec factory
         public void AddTransient<TInterface>(Func<TInterface> factory)
         {
             if (factory == null)
@@ -140,7 +132,6 @@ namespace CMOS.Framework.Implementation
             });
         }
 
-        // Résoudre une dépendance (générique)
         public TInterface GetService<TInterface>()
         {
             var typeName = typeof(TInterface).Name;
@@ -152,16 +143,13 @@ namespace CMOS.Framework.Implementation
                     object result;
                     if (service.IsTransient)
                     {
-                        // Créer une nouvelle instance pour transient
                         result = service.Factory();
                     }
                     else
                     {
-                        // Retourner l'instance singleton
                         result = service.Instance;
                     }
 
-                    // Cast via variable intermédiaire pour éviter kernel panic
                     return (TInterface)(object)result;
                 }
             }
@@ -169,7 +157,6 @@ namespace CMOS.Framework.Implementation
             throw new Exception($"Service de type {typeName} non enregistré");
         }
 
-        // Résoudre une dépendance (non-générique)
         public object GetService(Type serviceType)
         {
             var typeName = serviceType.Name;
@@ -192,7 +179,6 @@ namespace CMOS.Framework.Implementation
             throw new Exception($"Service de type {typeName} non enregistré");
         }
 
-        // Méthode utilitaire pour retirer un service existant
         private void RemoveService(string typeName)
         {
             for (int i = _services.Count - 1; i >= 0; i--)
@@ -204,7 +190,6 @@ namespace CMOS.Framework.Implementation
             }
         }
 
-        // Vérifier si un service est enregistré
         public bool IsRegistered<TInterface>()
         {
             var typeName = typeof(TInterface).Name;
@@ -218,7 +203,6 @@ namespace CMOS.Framework.Implementation
             return false;
         }
 
-        // Obtenir le nombre de services enregistrés
         public int Count => _services.Count;
     }
 }
