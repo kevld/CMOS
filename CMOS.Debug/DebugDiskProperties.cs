@@ -10,6 +10,6 @@ namespace CMOS.Debug
 
         public long FreeSpace => throw new NotImplementedException();
 
-        public string RootPath => throw new NotImplementedException();
+        public string RootPath => @"C:\";
     }
 }
