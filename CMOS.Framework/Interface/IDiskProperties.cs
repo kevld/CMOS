@@ -10,5 +10,7 @@ namespace CMOS.Framework.Interface
         public long FreeSpace { get; }
 
         public string RootPath { get; }
+
+        public void CreateFile(string path, string content);
     }
 }

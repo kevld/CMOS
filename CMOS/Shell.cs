@@ -20,7 +20,7 @@ namespace CMOS
 
         public void About()
         {
-            Console.WriteLine("Shell v0.0.2");
+            Console.WriteLine("Shell v0.0.3");
             Console.WriteLine();
         }
 
@@ -43,14 +43,15 @@ namespace CMOS
         public void Help()
         {
             Console.WriteLine("=== Commands ===");
-            Console.WriteLine("About / a    : About this program");
-            Console.WriteLine("Exit / e     : Shutdown the computer");
-            Console.WriteLine("Help / ?     : Display this menu");
+            Console.WriteLine("About / a        : About this program");
+            Console.WriteLine("Exit / e         : Shutdown the computer");
+            Console.WriteLine("Help / ?         : Display this menu");
             Console.WriteLine();
             Console.WriteLine("=== Programs ===");
-            Console.WriteLine("Clock / c    : Start the clock");
-            Console.WriteLine("Disk / d     : Display disk data");
-            Console.WriteLine("Text / t     : Start the text editor");
+            Console.WriteLine("Clock / c        : Start the clock");
+            Console.WriteLine("Disk / d         : Display disk data");
+            Console.WriteLine("Text / t         : Start the text editor");
+            Console.WriteLine("Todo / l         : Start the todo app");
             Console.WriteLine();
         }
 
@@ -108,6 +109,11 @@ namespace CMOS
                 case "t":
                     Text text = new(_diskProperties);
                     text.Run();
+                    break;
+                case "todo":
+                case "l":
+                    Todo todo = new(_diskProperties);
+                    todo.Run();
                     break;
                 default:
                     Console.WriteLine("Unknown command");

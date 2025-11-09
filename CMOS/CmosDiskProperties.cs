@@ -1,5 +1,6 @@
 ﻿using CMOS.Framework.Interface;
 using System;
+using System.IO;
 using Sys = Cosmos.System;
 
 namespace CMOS
@@ -24,5 +25,18 @@ namespace CMOS
         public long FreeSpace => _fs.GetAvailableFreeSpace(ROOT);
 
         public string RootPath => ROOT;
+
+        public void CreateFile(string path, string content)
+        {
+
+            try
+            {
+                File.WriteAllText(path, content);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
     }
 }
