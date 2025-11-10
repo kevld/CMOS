@@ -2,7 +2,10 @@
 using CMOS.Framework.Interface;
 using Cosmos.HAL;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using Sys = Cosmos.System;
 
 namespace CMOS
@@ -20,7 +23,7 @@ namespace CMOS
 
         public void About()
         {
-            Console.WriteLine("Shell v0.0.2");
+            Console.WriteLine("Shell v0.0.3");
             Console.WriteLine();
         }
 
@@ -43,14 +46,17 @@ namespace CMOS
         public void Help()
         {
             Console.WriteLine("=== Commands ===");
-            Console.WriteLine("About / a    : About this program");
-            Console.WriteLine("Exit / e     : Shutdown the computer");
-            Console.WriteLine("Help / ?     : Display this menu");
+            Console.WriteLine("About / a        : About this program");
+            Console.WriteLine("Exit / e         : Shutdown the computer");
+            Console.WriteLine("Help / ?         : Display this menu");
+            Console.WriteLine("del <file>       : Delete specified file");
+            Console.WriteLine("ls               : List files");
             Console.WriteLine();
             Console.WriteLine("=== Programs ===");
-            Console.WriteLine("Clock / c    : Start the clock");
-            Console.WriteLine("Disk / d     : Display disk data");
-            Console.WriteLine("Text / t     : Start the text editor");
+            Console.WriteLine("Clock / c        : Start the clock");
+            Console.WriteLine("Disk / d         : Display disk data");
+            Console.WriteLine("Text / t         : Start the text editor");
+            Console.WriteLine("Todo / l         : Start the todo app");
             Console.WriteLine();
         }
 
@@ -109,8 +115,48 @@ namespace CMOS
                     Text text = new(_diskProperties);
                     text.Run();
                     break;
+                case "todo":
+                case "l":
+                    Todo todo = new(_diskProperties);
+                    todo.Run();
+                    break;
+                case "ls":
+                    string[] files = Directory.GetFiles(_diskProperties.RootPath);
+                    foreach (var file in files)
+                    {
+                        Console.WriteLine(file);
+                    }
+                    break;
                 default:
-                    Console.WriteLine("Unknown command");
+                    if (input.ToLower().StartsWith("del"))
+                    {
+                        string[] cmd = input.Split(' ');
+                        if (cmd.Length != 2)
+                        {
+                            Console.WriteLine("Syntax error. Usage : del <file name>");
+                        }
+
+                        string fileName = cmd[1];
+                        if (!fileName.StartsWith(_diskProperties.RootPath))
+                        {
+                            fileName = _diskProperties.RootPath + fileName;
+                        }
+
+                        if (!File.Exists(fileName))
+                        {
+                            Console.WriteLine("This File does not exist");
+                        }
+                        else
+                        {
+                            File.Delete(fileName);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Unknown command");
+
+                    }
+
                     break;
             }
         }

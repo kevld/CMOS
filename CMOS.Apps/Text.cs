@@ -31,7 +31,7 @@ namespace CMOS.Apps
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("=== About ===");
-            Console.WriteLine("Text v0.1.1");
+            Console.WriteLine("Text v0.0.3");
             Console.WriteLine("Text editor");
             Console.WriteLine();
             Console.WriteLine("Press any key to continue...");
@@ -174,41 +174,79 @@ namespace CMOS.Apps
                 return;
             }
 
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.WriteLine("=== Open file ===");
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.BackgroundColor = ConsoleColor.Black;
+            int selectedIndex = 0;
+            bool selecting = true;
 
-            for (int i = 0; i < files.Count; i++)
-                Console.WriteLine($"{i} - {Path.GetFileName(files[i])}");
-
-            Console.WriteLine();
-            Console.Write("Select file number to open : ");
-            string? choice = Console.ReadLine();
-
-            if (int.TryParse(choice, out int sel) && sel >= 0 && sel < files.Count)
+            while (selecting)
             {
-                fileName = files[sel];
-                if (!fileName.StartsWith(_diskProperties.RootPath)) { fileName = _diskProperties.RootPath + fileName; }
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.WriteLine("=== Open ===");
+                Console.ResetColor();
 
-                try
+                for (int i = 0; i < files.Count; i++)
                 {
-                    lines = File.ReadAllLines(fileName).ToList();
-                    if (lines.Count == 0)
-                        lines.Add(string.Empty);
-
-                    cursorY = lines.Count;
-                    cursorX = lines.Last().Length;
-                    Console.Clear();
-                    isSaved = true;
+                    string fileNameDisplay = Path.GetFileName(files[i]);
+                    if (i == selectedIndex)
+                    {
+                        Console.BackgroundColor = ConsoleColor.White;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.WriteLine($"> {fileNameDisplay}");
+                    }
+                    else
+                    {
+                        Console.ResetColor();
+                        Console.WriteLine($"  {fileNameDisplay}");
+                    }
                 }
-                catch (Exception e)
+
+                Console.ResetColor();
+                Console.WriteLine();
+                Console.WriteLine("Up/Down : Navigate | Enter : Open | Esc : Cancel");
+
+                ConsoleKeyInfo key = Console.ReadKey(true);
+
+                switch (key.Key)
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"Error while reading : {e.Message}");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.ReadKey(true);
+                    case ConsoleKey.UpArrow:
+                        selectedIndex = (selectedIndex > 0) ? selectedIndex - 1 : files.Count - 1;
+                        break;
+
+                    case ConsoleKey.DownArrow:
+                        selectedIndex = (selectedIndex < files.Count - 1) ? selectedIndex + 1 : 0;
+                        break;
+
+                    case ConsoleKey.Enter:
+                        fileName = files[selectedIndex];
+                        if (!fileName.StartsWith(_diskProperties.RootPath))
+                            fileName = Path.Combine(_diskProperties.RootPath, fileName);
+
+                        try
+                        {
+                            lines = File.ReadAllLines(fileName).ToList();
+                            if (lines.Count == 0)
+                                lines.Add(string.Empty);
+
+                            cursorY = lines.Count;
+                            cursorX = lines.Last().Length;
+                            Console.Clear();
+                            isSaved = true;
+                        }
+                        catch (Exception e)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine($"Error while opening : {e.Message}");
+                            Console.ResetColor();
+                            Console.ReadKey(true);
+                        }
+
+                        selecting = false;
+                        break;
+
+                    case ConsoleKey.Escape:
+                        selecting = false;
+                        break;
                 }
             }
 
@@ -235,9 +273,18 @@ namespace CMOS.Apps
 
             try
             {
-                File.WriteAllLines(fileName, lines);
+                string content = "";
+                for (int i = 0; i < lines.Count; i++)
+                {
+                    content += lines[i];
+                    if (i < lines.Count - 1)
+                        content += "\n";
+                }
+                _diskProperties.CreateFile(fileName, content);
+
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"File saved : {fileName}");
+
                 isSaved = true;
             }
             catch (Exception e)

@@ -124,7 +124,7 @@ namespace CMOS
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write(".");
             Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.Write("2");
+            Console.Write("3");
         }
     }
 }
