@@ -4,6 +4,7 @@
 - All softwares in GUI
 === v0.2.1 ===
 - Musical player
+- Calendar
 === v0.2.0 ===
 - GUI
 === v0.1.1 ===
@@ -18,8 +19,7 @@
 === v0.0.3 ===
 - Todo
 - Update Text (open by arrows)
-- Calendar
-- file explorer (cd, md, del, ls)
+- file explorer (del, ls)
 === v0.0.2 ===
 - Debug environment
 - Splashscreen
