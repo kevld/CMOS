@@ -1,13 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Version>0.0.4</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CMOS.Framework\CMOS.Framework.csproj" />
+    <ProjectReference Include="..\CMOS.Ressources\CMOS.Ressources.csproj" />
+    <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

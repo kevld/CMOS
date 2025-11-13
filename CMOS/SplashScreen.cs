@@ -1,10 +1,13 @@
-﻿using System;
+﻿using CMOS.Framework;
+using System;
 using System.Threading;
 
 namespace CMOS
 {
     public class SplashScreen
     {
+        private const string VERSION = "0.0.4";
+
         public static void Show()
         {
             Console.Clear();
@@ -113,18 +116,20 @@ namespace CMOS
         }
         private static void WriteVersion()
         {
+            BuildInfo buildInfo = new BuildInfo(VERSION);
+
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.Write("v");
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.Write("0");
+            Console.Write(Version.Major);
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write(".");
             Console.ForegroundColor = ConsoleColor.DarkGreen;
-            Console.Write("0");
+            Console.Write(Version.Minor);
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write(".");
             Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.Write("3");
+            Console.Write(Version.Build);
         }
     }
 }

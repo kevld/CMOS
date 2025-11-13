@@ -1,18 +1,18 @@
 ﻿=== v1.0.0 ===
 - Installer
-=== v0.3.0 ===
+=== v0.4.0 ===
 - All softwares in GUI
-=== v0.2.1 ===
+=== v0.3.1 ===
 - Musical player
 - Calendar
-=== v0.2.0 ===
+=== v0.3.0 ===
 - GUI
-=== v0.1.1 ===
+=== v0.2.1 ===
 - Bug fixing if needed
-=== v0.1.0 ===
+=== v0.2.0 ===
 - Multitasking
 - New interface (top ribbon)
-=== v0.0.4 ===
+=== v0.1.0 ===
 - Translation
 - Control panel (user settings)
 - Universal shortcuts
