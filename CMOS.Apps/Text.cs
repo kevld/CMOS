@@ -1,8 +1,11 @@
-﻿using CMOS.Framework.Interface;
+﻿using CMOS.Common.Extensions;
+using CMOS.Framework.Abstract;
+using CMOS.Framework.Interface;
+using CMOS.Ressources;
 
 namespace CMOS.Apps
 {
-    public class Text : IApp
+    public class Text : App
     {
         private readonly IDiskProperties _diskProperties;
 
@@ -18,7 +21,7 @@ namespace CMOS.Apps
 
         private ConsoleKeyInfo keyInfo;
 
-        public Text(IDiskProperties diskProperties)
+        public Text(IDiskProperties diskProperties) : base(Version.Major, Version.Minor, Version.Build)
         {
             if(diskProperties == null) throw new ArgumentNullException(nameof(diskProperties));
 
@@ -26,52 +29,52 @@ namespace CMOS.Apps
             _diskProperties = diskProperties;
         }
 
-        public void About()
+        public override void About()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("=== About ===");
-            Console.WriteLine("Text v0.0.3");
-            Console.WriteLine("Text editor");
+            Console.WriteLine($"=== {Translation.GENERIC_PROGRAM_HELP_ABOUT.Translate()} ===");
+            Console.WriteLine($"Text {GetVersion()}");
+            Console.WriteLine(Translation.APP_TEXT_APP_NAME.Translate());
             Console.WriteLine();
-            Console.WriteLine("Press any key to continue...");
+            Console.WriteLine(Translation.GENERIC_PROGRAM_PRESS_ANY_KEY.Translate());
             Console.ReadKey(true);
             forceRefresh = true;
         }
 
-        public void Help()
+        public override void Help()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("=== Help ===");
-            Console.WriteLine("Alt + A : About");
-            Console.WriteLine("Alt + E : Exit");
-            Console.WriteLine("Alt + O : Open");
-            Console.WriteLine("Alt + S or Ctrl + S : Save");
-            Console.WriteLine("Alt + H : Display this help");
+            Console.WriteLine($"=== {Translation.GENERIC_PROGRAM_HELP_LABEL.Translate()} ===");
+            Console.WriteLine($"Alt + A : {Translation.GENERIC_PROGRAM_HELP_ABOUT.Translate()}");
+            Console.WriteLine($"Alt + E : {Translation.GENERIC_PROGRAM_HELP_EXIT.Translate()}");
+            Console.WriteLine($"Alt + O : {Translation.GENERIC_PROGRAM_HELP_OPEN.Translate()}");
+            Console.WriteLine($"Alt + S {Translation.GENERIC_PROGRAM_OPTION_OR.Translate()} Ctrl + S : {Translation.GENERIC_PROGRAM_HELP_SAVE.Translate()}");
+            Console.WriteLine($"Alt + H :{Translation.GENERIC_PROGRAM_HELP_HELP.Translate()}");
             Console.WriteLine();
-            Console.WriteLine("Arrow : Move cursor");
-            Console.WriteLine("Enter : New line");
-            Console.WriteLine("Backspace : Remove character");
+            Console.WriteLine(Translation.APP_TEXT_KEY_ARROW.Translate());
+            Console.WriteLine(Translation.APP_TEXT_KEY_ENTER.Translate());
+            Console.WriteLine(Translation.APP_TEXT_KEY_BACKSPACE.Translate());
             Console.WriteLine();
-            Console.WriteLine("Press any key to continue...");
+            Console.WriteLine(Translation.GENERIC_PROGRAM_PRESS_ANY_KEY.Translate());
             Console.ReadKey(true);
             forceRefresh = true;
         }
 
-        public void Exit()
+        public override void Exit()
         {
             if (!isSaved)
             {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("File not saved !");
+                Console.WriteLine(Translation.ERR_FILE_NOT_SAVED.Translate());
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.Write("Press ");
+                Console.Write(Translation.APP_TEXT_EXIT_PRESS.Translate());
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write("Y");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine(" to exit without saving, or any key to go back.");
+                Console.WriteLine(Translation.APP_TEXT_EXIT_PRESS_2.Translate());
 
                 keyInfo = Console.ReadKey(true);
                 if (keyInfo.Key == ConsoleKey.Y)
@@ -91,7 +94,7 @@ namespace CMOS.Apps
             }
         }
 
-        public void Run()
+        public override void Run()
         {
             DrawTitle();
 
@@ -145,7 +148,10 @@ namespace CMOS.Apps
             Console.ForegroundColor = ConsoleColor.Black;
 
             int consoleWidth = Console.WindowWidth;
-            string subTitle = string.IsNullOrEmpty(fileName) ? "New file" : Path.GetFileName(fileName);
+            string subTitle = string.IsNullOrEmpty(fileName) ? 
+                Translation.APP_TEXT_NEW_FILE.Translate() : 
+                Path.GetFileName(fileName);
+
             string title = $"=== Text - {subTitle} ===";
 
             int start = Math.Max(0, (consoleWidth - title.Length) / 2);
@@ -168,7 +174,7 @@ namespace CMOS.Apps
 
             if (!files.Any())
             {
-                Console.WriteLine("No file found. Press any key to continue...");
+                Console.WriteLine($"{Translation.APP_TEXT_NO_FILE.Translate()}. {Translation.GENERIC_PROGRAM_PRESS_ANY_KEY.Translate()}");
                 Console.ReadKey(true);
                 forceRefresh = true;
                 return;
@@ -182,7 +188,7 @@ namespace CMOS.Apps
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.BackgroundColor = ConsoleColor.White;
-                Console.WriteLine("=== Open ===");
+                Console.WriteLine($"=== {Translation.GENERIC_PROGRAM_HELP_OPEN.Translate()} ===");
                 Console.ResetColor();
 
                 for (int i = 0; i < files.Count; i++)
@@ -203,7 +209,7 @@ namespace CMOS.Apps
 
                 Console.ResetColor();
                 Console.WriteLine();
-                Console.WriteLine("Up/Down : Navigate | Enter : Open | Esc : Cancel");
+                Console.WriteLine(Translation.APP_TEXT_OPEN_NAVIGATE.Translate());
 
                 ConsoleKeyInfo key = Console.ReadKey(true);
 
@@ -236,7 +242,7 @@ namespace CMOS.Apps
                         catch (Exception e)
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine($"Error while opening : {e.Message}");
+                            Console.WriteLine($"{Translation.ERR_FILE_NOT_OPENED.Translate()} : {e.Message}");
                             Console.ResetColor();
                             Console.ReadKey(true);
                         }
@@ -258,7 +264,7 @@ namespace CMOS.Apps
             Console.Clear();
             if (string.IsNullOrEmpty(fileName))
             {
-                Console.WriteLine("File name :");
+                Console.WriteLine($"{Translation.GENERIC_PROGRAM_FILE_NAME.Translate()} :");
                 Console.Write("> ");
                 do
                 {
@@ -283,19 +289,19 @@ namespace CMOS.Apps
                 _diskProperties.CreateFile(fileName, content);
 
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"File saved : {fileName}");
+                Console.WriteLine($"{Translation.GENERIC_PROGRAM_FILE_SAVED.Translate()} : {fileName}");
 
                 isSaved = true;
             }
             catch (Exception e)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"Error while saving : {e.Message}");
+                Console.WriteLine($"{Translation.ERR_FILE_NOT_SAVED.Translate()} : {e.Message}");
             }
             finally
             {
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("Press any key to continue...");
+                Console.WriteLine(Translation.GENERIC_PROGRAM_PRESS_ANY_KEY.Translate());
                 Console.ReadKey(true);
                 forceRefresh = true;
             }

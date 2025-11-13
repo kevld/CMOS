@@ -8,5 +8,7 @@
         public void Exit();
 
         public void Help();
+
+        public string GetVersion();
     }
 }

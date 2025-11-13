@@ -1,36 +1,35 @@
-﻿using CMOS.Framework.Interface;
+﻿using CMOS.Common.Extensions;
+using CMOS.Framework.Abstract;
+using CMOS.Framework.Interface;
+using CMOS.Ressources;
 
 namespace CMOS.Apps
 {
-    public class Disk : IApp
+    public class Disk : App
     {
         private readonly IDiskProperties _diskProperties;
 
-        public Disk(IDiskProperties diskProperties)
+        public Disk(IDiskProperties diskProperties) : base(Version.Major, Version.Minor, Version.Build)
         {
             if(diskProperties == null) throw new ArgumentNullException(nameof(diskProperties));
             _diskProperties = diskProperties;
         }
 
-        public void About()
+        public override void About()
         {
-            Console.WriteLine("Disk v0.0.2");
+            Console.WriteLine($"Disk {GetVersion()}");
         }
 
-        public void Exit()
+        public override void Exit()
         {
             
         }
 
-        public void Help()
+        public override void Help()
         {
-            Console.WriteLine("About / a     : About");
-            Console.WriteLine("Exit / e      : Exit");
-            Console.WriteLine("Help / ?      : Display this menu");
-            Console.WriteLine();
         }
 
-        public void Run()
+        public override void Run()
         {
             long freeSpace = _diskProperties.FreeSpace / 1024 / 1024;
 
@@ -46,7 +45,7 @@ namespace CMOS.Apps
                 formattedSpace = $"{freeSpace:F0} Mb";
             }
 
-            Console.WriteLine($"{_diskProperties.Label} | {_diskProperties.PartitionType} | Free Space: {formattedSpace}");
+            Console.WriteLine($"{_diskProperties.Label} | {_diskProperties.PartitionType} | {Translation.APP_DISK_LABEL_FREE_SPACE.Translate()}: {formattedSpace}");
         }
     }
 }

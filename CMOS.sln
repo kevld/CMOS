@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMOS.Apps", "CMOS.Apps\CMOS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMOS.Framework", "CMOS.Framework\CMOS.Framework.csproj", "{D57CA565-17BA-4336-82FC-7BA133E0AFB4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMOS.Ressources", "CMOS.Ressources\CMOS.Ressources.csproj", "{701DEE0B-884E-4DC8-8D8D-054EC40C0D3B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{21C974DA-AA08-41CD-9C4C-0015B98CB65E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{D57CA565-17BA-4336-82FC-7BA133E0AFB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D57CA565-17BA-4336-82FC-7BA133E0AFB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D57CA565-17BA-4336-82FC-7BA133E0AFB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{701DEE0B-884E-4DC8-8D8D-054EC40C0D3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{701DEE0B-884E-4DC8-8D8D-054EC40C0D3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{701DEE0B-884E-4DC8-8D8D-054EC40C0D3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{701DEE0B-884E-4DC8-8D8D-054EC40C0D3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21C974DA-AA08-41CD-9C4C-0015B98CB65E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21C974DA-AA08-41CD-9C4C-0015B98CB65E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21C974DA-AA08-41CD-9C4C-0015B98CB65E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21C974DA-AA08-41CD-9C4C-0015B98CB65E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

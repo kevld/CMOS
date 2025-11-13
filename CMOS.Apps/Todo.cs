@@ -1,8 +1,11 @@
-﻿using CMOS.Framework.Interface;
+﻿using CMOS.Common.Extensions;
+using CMOS.Framework.Abstract;
+using CMOS.Framework.Interface;
+using CMOS.Ressources;
 
 namespace CMOS.Apps
 {
-    public class Todo : IApp
+    public class Todo : App
     {
         private readonly IDiskProperties _diskProperties;
 
@@ -15,7 +18,7 @@ namespace CMOS.Apps
 
         private ConsoleKeyInfo keyInfo;
 
-        public Todo(IDiskProperties diskProperties)
+        public Todo(IDiskProperties diskProperties) : base(Version.Major, Version.Minor, Version.Build)
         {
             if (diskProperties == null) throw new ArgumentNullException(nameof(diskProperties));
 
@@ -52,13 +55,13 @@ namespace CMOS.Apps
             }
         }
 
-        public void About()
+        public override void About()
         {
-            Console.WriteLine("Shell v0.0.2");
+            Console.WriteLine($"Shell {GetVersion()}");
             Console.WriteLine();
         }
 
-        public void Exit()
+        public override void Exit()
         {
             string fileName = $"{_diskProperties.RootPath}t.odo";
 
@@ -74,12 +77,12 @@ namespace CMOS.Apps
                 _diskProperties.CreateFile(fileName, content);
                 
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"File saved : {fileName}");
+                Console.WriteLine($"{Translation.GENERIC_PROGRAM_FILE_SAVED.Translate()} : {fileName}");
             }
             catch (Exception e)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"Error while saving : {e.Message}");
+                Console.WriteLine($"{Translation.ERR_FILE_NOT_SAVED} : {e.Message}");
             }
             finally
             {
@@ -90,31 +93,31 @@ namespace CMOS.Apps
             }
         }
 
-        public void Help()
+        public override void Help()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("=== Help ===");
-            Console.WriteLine("Alt + A : About");
-            Console.WriteLine("Alt + E : Exit");
-            Console.WriteLine("Alt + H : Display this help");
+            Console.WriteLine($"=== {Translation.GENERIC_PROGRAM_HELP_LABEL.Translate()} ===");
+            Console.WriteLine($"Alt + A : {Translation.GENERIC_PROGRAM_HELP_ABOUT.Translate()}");
+            Console.WriteLine($"Alt + E : {Translation.GENERIC_PROGRAM_HELP_EXIT.Translate()}");
+            Console.WriteLine($"Alt + H : {Translation.GENERIC_PROGRAM_HELP_HELP.Translate()}");
             Console.WriteLine();
-            Console.WriteLine("Up/Down : Select todo task");
-            Console.WriteLine("Space : Complete task");
-            Console.WriteLine("Enter : New task");
+            Console.WriteLine(Translation.APP_TODO_KEY_ARROWS.Translate());
+            Console.WriteLine(Translation.APP_TODO_KEY_SPACE.Translate());
+            Console.WriteLine(Translation.APP_TODO_KEY_ENTER.Translate());
             Console.WriteLine();
-            Console.WriteLine("Press any key to continue...");
+            Console.WriteLine(Translation.GENERIC_PROGRAM_PRESS_ANY_KEY.Translate());
             Console.ReadKey(true);
         }
 
-        public void Run()
+        public override void Run()
         {
             while (isRunning)
             {
                 if (forceRefresh)
                 {
                     forceRefresh = false;
-                    DrawTitle("Todo list");
+                    DrawTitle(Translation.APP_TODO_APP_NAME.Translate());
                 }
 
                 Console.SetCursorPosition(0, 1);

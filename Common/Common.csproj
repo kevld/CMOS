@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CMOS.Ressources\CMOS.Ressources.csproj" />
+  </ItemGroup>
+
 </Project>

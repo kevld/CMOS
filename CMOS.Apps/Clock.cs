@@ -1,31 +1,38 @@
 ﻿
-using CMOS.Framework.Interface;
+using CMOS.Common.Extensions;
+using CMOS.Framework.Abstract;
+using CMOS.Ressources;
 
 namespace CMOS.Apps
 {
-    public class Clock : IApp
+    public class Clock : App
     {
         private bool _isRunning = true;
 
-        public void About()
+        public Clock() : base(Version.Major, Version.Minor, Version.Build)
         {
-            Console.WriteLine("Clock v0.0.2");
+            
         }
 
-        public void Exit()
+        public override void About()
+        {
+            Console.WriteLine($"Clock {GetVersion()}");
+        }
+
+        public override void Exit()
         {
             _isRunning = false;
         }
 
-        public void Help()
+        public override void Help()
         {
-            Console.WriteLine("About / a     : About");
-            Console.WriteLine("Exit / e      : Exit");
-            Console.WriteLine("Help / ?      : Display this menu");
+            Console.WriteLine($"Alt + a     : {Translation.GENERIC_PROGRAM_HELP_ABOUT.Translate()}");
+            Console.WriteLine($"Alt + e     : {Translation.GENERIC_PROGRAM_HELP_EXIT.Translate()}");
+            Console.WriteLine($"Alt + H     : {Translation.GENERIC_PROGRAM_HELP_HELP.Translate()}");
             Console.WriteLine();
         }
 
-        public void Run()
+        public override void Run()
         {
 
             while (_isRunning)
@@ -50,19 +57,17 @@ namespace CMOS.Apps
         {
             if (Console.KeyAvailable)
             {
-                var key = Console.ReadKey(true);
-                if (key.Key == ConsoleKey.E)
+                var keyInfo = Console.ReadKey(true);
+                if ((keyInfo.Modifiers & ConsoleModifiers.Alt) != 0)
                 {
-                    Exit();
+                    switch (keyInfo.Key)
+                    {
+                        case ConsoleKey.E: Exit(); break;
+                        case ConsoleKey.A: About(); break;
+                        case ConsoleKey.H: Help(); break;
+                    }
                 }
-                if(key.Key == ConsoleKey.A)
-                {
-                    About();
-                }
-                if (key.Key == ConsoleKey.H)
-                {
-                    Help();
-                }
+                    
             }
         }
     }

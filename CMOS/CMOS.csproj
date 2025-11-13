@@ -22,6 +22,7 @@
 		<DebugMode>Source</DebugMode>
 		<DebugEnabled>True</DebugEnabled>
 		<ExtractMapFile>True</ExtractMapFile>
+		<Version>1.0.0</Version>
     </PropertyGroup>
 
     <ItemGroup>
@@ -33,6 +34,8 @@
     <ItemGroup>
       <ProjectReference Include="..\CMOS.Apps\CMOS.Apps.csproj" />
       <ProjectReference Include="..\CMOS.Framework\CMOS.Framework.csproj" />
+      <ProjectReference Include="..\CMOS.Ressources\CMOS.Ressources.csproj" />
+      <ProjectReference Include="..\Common\Common.csproj" />
     </ItemGroup>
 
     <ItemGroup>

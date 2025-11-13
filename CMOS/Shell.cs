@@ -1,35 +1,39 @@
 ﻿using CMOS.Apps;
+using CMOS.Common;
+using CMOS.Extensions;
+using CMOS.Framework.Abstract;
 using CMOS.Framework.Interface;
+using CMOS.Managers;
+using CMOS.Ressources;
 using Cosmos.HAL;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using Sys = Cosmos.System;
 
 namespace CMOS
 {
-    public class Shell : IApp
+    public class Shell : App
     {
-        private IDiskProperties _diskProperties;
+        private readonly IDiskProperties _diskProperties;
+        private readonly LanguageManager _lm;
+
 
         private bool _initialized = false;
 
-        public Shell(IDiskProperties diskProperties)
+        public Shell(IDiskProperties diskProperties) : base(Version.Major, Version.Minor, Version.Build)
         {
             _diskProperties = diskProperties;
+            _lm = new LanguageManager(_diskProperties);
         }
 
-        public void About()
+        public override void About()
         {
-            Console.WriteLine("Shell v0.0.3");
+            Console.WriteLine($"Shell {GetVersion()}");
             Console.WriteLine();
         }
 
-        public void Exit()
+        public override void Exit()
         {
-            Console.Write("Shutting down computer.");
+            Console.Write(Translation.SHELL_HALT.Translate());
             System.Threading.Thread.Sleep(200);
             Console.Write(".");
             System.Threading.Thread.Sleep(200);
@@ -43,24 +47,25 @@ namespace CMOS
             Power.ACPIShutdown();
         }
 
-        public void Help()
+        public override void Help()
         {
-            Console.WriteLine("=== Commands ===");
-            Console.WriteLine("About / a        : About this program");
-            Console.WriteLine("Exit / e         : Shutdown the computer");
-            Console.WriteLine("Help / ?         : Display this menu");
-            Console.WriteLine("del <file>       : Delete specified file");
-            Console.WriteLine("ls               : List files");
+            Console.WriteLine($"=== {Translation.MENU_LABEL_COMMANDS.Translate()} ===");
+            Console.WriteLine($"About / a        : {Translation.SHELL_HELP_ABOUT.Translate()}");
+            Console.WriteLine($"Exit / e         : {Translation.SHELL_HELP_EXIT.Translate()}");
+            Console.WriteLine($"Help / ?         : {Translation.SHELL_HELP_HELP.Translate()}");
+            Console.WriteLine($"del <{Translation.SHELL_HELP_DEL_FILE.Translate()}>       : {Translation.SHELL_HELP_DEL.Translate()}");
+            Console.WriteLine($"ls               : {Translation.SHELL_HELP_LIST_FILES.Translate()}");
             Console.WriteLine();
-            Console.WriteLine("=== Programs ===");
-            Console.WriteLine("Clock / c        : Start the clock");
-            Console.WriteLine("Disk / d         : Display disk data");
-            Console.WriteLine("Text / t         : Start the text editor");
-            Console.WriteLine("Todo / l         : Start the todo app");
+            Console.WriteLine($"=== {Translation.MENU_LABEL_PROGRAMS.Translate()} ===");
+            Console.WriteLine($"Clock / c        : {Translation.SHELL_HELP_PROGRAM_CLOCK.Translate()}");
+            Console.WriteLine($"Disk / d         : {Translation.SHELL_HELP_PROGRAM_DISK.Translate()}");
+            Console.WriteLine($"Text / t         : {Translation.SHELL_HELP_PROGRAM_TEXT.Translate()}");
+            Console.WriteLine($"Todo / l         : {Translation.SHELL_HELP_PROGRAM_TODO.Translate()}");
+            Console.WriteLine($"ctl              : {Translation.SHELL_HELP_PROGRAM_CONTROL_PANEL.Translate()}");
             Console.WriteLine();
         }
 
-        public void Run()
+        public override void Run()
         {
             if (!_initialized)
             {
@@ -72,7 +77,7 @@ namespace CMOS
 
         private void Initialize()
         {
-            Console.WriteLine("Type \"Help\" or \"?\" to display the help");
+            Console.WriteLine($"{Translation.SHELL_INITIALIZE.Translate()}");
 
             _initialized = true;
         }
@@ -127,13 +132,21 @@ namespace CMOS
                         Console.WriteLine(file);
                     }
                     break;
+                case "ctl":
+                    ControlPanel panel = new(_diskProperties);
+                    panel.Run();
+
+                    Container.Instance.Language = panel.Language;
+                    _lm.LoadTranslation();
+
+                    break;
                 default:
                     if (input.ToLower().StartsWith("del"))
                     {
                         string[] cmd = input.Split(' ');
                         if (cmd.Length != 2)
                         {
-                            Console.WriteLine("Syntax error. Usage : del <file name>");
+                            Console.WriteLine($"{Translation.ERR_SHELL_DEL_SYNTAX.Translate()}");
                         }
 
                         string fileName = cmd[1];
@@ -144,7 +157,7 @@ namespace CMOS
 
                         if (!File.Exists(fileName))
                         {
-                            Console.WriteLine("This File does not exist");
+                            Console.WriteLine($"{Translation.ERR_FILE_NOT_FOUND.Translate()}");
                         }
                         else
                         {
@@ -153,8 +166,7 @@ namespace CMOS
                     }
                     else
                     {
-                        Console.WriteLine("Unknown command");
-
+                        Console.WriteLine($"{Translation.ERR_SHELL_UNKNOWN_COMMAND.Translate()}");
                     }
 
                     break;
