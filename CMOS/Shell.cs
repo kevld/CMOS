@@ -140,6 +140,9 @@ namespace CMOS
                     _lm.LoadTranslation();
 
                     break;
+                case "start":
+                    WindowManager._instance.Run();
+                    break;
                 default:
                     if (input.ToLower().StartsWith("del"))
                     {

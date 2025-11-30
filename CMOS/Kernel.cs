@@ -1,6 +1,9 @@
 ﻿using CMOS.Common;
 using CMOS.Framework.Interface;
 using CMOS.Managers;
+using Cosmos.System;
+using Cosmos.System.Graphics;
+using System.Drawing;
 using Sys = Cosmos.System;
 
 namespace CMOS
@@ -10,6 +13,8 @@ namespace CMOS
         private Shell _shell;
 
         private const string KERNEL_VERSION = "0.0.4";
+
+
 
         protected override void BeforeRun()
         {
@@ -26,10 +31,17 @@ namespace CMOS
 
             _shell = new(_diskProperties);
             SplashScreen.Show();
+
+            var canvas = FullScreenCanvas.GetFullScreenCanvas(
+            new Mode(1280, 720, ColorDepth.ColorDepth32));
+
+            WindowManager._instance.Init(canvas);
+            //canvas.Disable();
         }
 
         protected override void Run()
         {
+            WindowManager._instance.Run();
             _shell.Run();
         }
     }
